@@ -1,330 +1,413 @@
-# 🚢 Titanic Survival Prediction using Machine Learning
+# 🚢 Titanic Survival Prediction using Machine Learning & Power BI
 
 ## 📌 Project Overview
 
-The objective of this project is to analyze the Titanic dataset, identify the factors that influenced passenger survival, and build machine learning models to predict whether a passenger survived the disaster.
+This project analyzes the Titanic disaster dataset to identify the factors that influenced passenger survival and builds machine learning models to predict survival outcomes.
 
-This project covers the complete Data Science workflow including data cleaning, exploratory data analysis (EDA), feature engineering, machine learning model building, model evaluation, and Kaggle competition submission.
+The project follows a complete Data Science workflow:
+
+- Data Cleaning
+- Exploratory Data Analysis (EDA)
+- Feature Engineering
+- Data Preprocessing
+- Machine Learning Model Development
+- Model Evaluation
+- Power BI Dashboard Creation
+- Kaggle Submission
+
+The final solution combines Python-based analysis with an interactive Power BI dashboard to generate actionable insights from the Titanic dataset.
 
 ---
 
 ## 🛠️ Skills Demonstrated
 
-* Python
-* Pandas
-* NumPy
-* Matplotlib
-* Seaborn
-* Data Cleaning
-* Missing Value Handling
-* Exploratory Data Analysis (EDA)
-* Feature Engineering
-* Data Preprocessing
-* Machine Learning
-* Logistic Regression
-* Decision Tree
-* Random Forest
-* Model Evaluation
-* Feature Importance Analysis
+### Data Analysis
+- Python
+- Pandas
+- NumPy
+- Data Cleaning
+- Missing Value Handling
+- Exploratory Data Analysis (EDA)
+- Feature Engineering
+
+### Data Visualization
+- Matplotlib
+- Seaborn
+- Power BI
+- Dashboard Design
+- KPI Reporting
+
+### Machine Learning
+- Logistic Regression
+- Decision Tree
+- Random Forest
+- Model Evaluation
+- Feature Importance Analysis
 
 ---
 
-## 📂 Dataset Information
+# 📂 Dataset Information
 
-**Dataset:** Titanic Dataset (Kaggle)
+Dataset Source:
 
-**Rows:** 891
+Titanic Dataset (Kaggle)
 
-**Target Variable:**
+Total Records:
 
-* 0 = Did Not Survive
-* 1 = Survived
+- 891 Passengers
 
-### Features Used
+Target Variable:
 
-| Feature  | Description                |
-| -------- | -------------------------- |
-| Pclass   | Passenger Class            |
-| Sex      | Passenger Gender           |
-| Age      | Passenger Age              |
-| SibSp    | Number of Siblings/Spouses |
-| Parch    | Number of Parents/Children |
-| Fare     | Ticket Fare                |
-| Cabin    | Cabin Information          |
-| Embarked | Port of Embarkation        |
+| Value | Meaning |
+|---------|---------|
+| 0 | Did Not Survive |
+| 1 | Survived |
 
 ---
 
-## 🧹 Data Cleaning
+## Features Used
 
-### Missing Value Handling
-
-#### Age
-
-* 177 values were missing.
-* Missing values were filled using the median age grouped by Passenger Class and Sex.
-
-| Pclass | Sex    | Median Age |
-| ------ | ------ | ---------: |
-| 1      | Female |       35.0 |
-| 1      | Male   |       40.0 |
-| 2      | Female |       28.0 |
-| 2      | Male   |       30.0 |
-| 3      | Female |       21.5 |
-| 3      | Male   |       25.0 |
-
-This approach preserves demographic differences better than using a global mean or median.
-
-#### Embarked
-
-* 2 values were missing.
-* Filled using the mode (most frequent embarkation port).
-
-#### Cabin
-
-* Only 204 out of 891 values were available.
-* The Cabin column contained excessive missing values.
-* A new feature named HasCabin was created.
-* The original Cabin column was dropped.
-
-### Removed Columns
-
-* PassengerId
-* Name
-* Ticket
-* Cabin
+| Feature | Description |
+|----------|-------------|
+| Pclass | Passenger Class |
+| Sex | Passenger Gender |
+| Age | Passenger Age |
+| SibSp | Number of Siblings/Spouses |
+| Parch | Number of Parents/Children |
+| Fare | Ticket Fare |
+| Cabin | Cabin Information |
+| Embarked | Port of Embarkation |
 
 ---
 
-## ⚙️ Feature Engineering
+# 🧹 Data Cleaning
 
-### 1. HasCabin
+## Missing Values Handling
 
-A new binary feature was created:
+### Age
 
-* 1 = Cabin information available
-* 0 = Cabin information missing
+- 177 missing values
+- Filled using median age grouped by Passenger Class and Gender
 
-### 2. FamilySize
+### Embarked
 
+- 2 missing values
+- Filled using mode
+
+### Cabin
+
+- Large number of missing values
+- Created a binary feature:
+
+```text
+HasCabin
+```
+
+- Original Cabin column removed
+
+---
+
+## Removed Columns
+
+```text
+PassengerId
+Name
+Ticket
+Cabin
+```
+
+---
+
+# ⚙️ Feature Engineering
+
+## FamilySize
+
+```python
 FamilySize = SibSp + Parch + 1
-
-The +1 represents the passenger themselves.
-
-### 3. IsAlone
-
-A new binary feature was created:
-
-* 1 = Passenger was traveling alone
-* 0 = Passenger was traveling with family
+```
 
 ---
 
-## 📊 Exploratory Data Analysis (EDA)
+## IsAlone
 
-### Survival Rate by Gender
+Binary Feature:
+
+| Value | Meaning |
+|---------|---------|
+| 1 | Traveling Alone |
+| 0 | Traveling With Family |
+
+---
+
+## HasCabin
+
+Binary Feature:
+
+| Value | Meaning |
+|---------|---------|
+| 1 | Cabin Information Available |
+| 0 | Missing Cabin Information |
+
+---
+
+# 📊 Exploratory Data Analysis
+
+## Survival Rate by Gender
 
 | Gender | Survival Rate |
-| ------ | ------------: |
-| Female |        74.20% |
-| Male   |        18.89% |
+|---------|--------------|
+| Female | 74.20% |
+| Male | 18.89% |
 
-#### Insight
+### Insight
 
-Female passengers had significantly higher survival rates than male passengers.
+Female passengers survived significantly more often than male passengers.
 
 ---
 
-### Survival Rate by Passenger Class
+## Survival Rate by Passenger Class
 
-| Passenger Class | Survival Rate |
-| --------------- | ------------: |
-| 1st Class       |        62.96% |
-| 2nd Class       |        47.28% |
-| 3rd Class       |        24.24% |
+| Class | Survival Rate |
+|---------|--------------|
+| 1st Class | 62.96% |
+| 2nd Class | 47.28% |
+| 3rd Class | 24.24% |
 
-#### Insight
+### Insight
 
 Passengers traveling in higher classes had better chances of survival.
 
 ---
 
-### Survival Rate by Age Group
+## Survival Rate by Age Group
 
 | Age Group | Survival Rate |
-| --------- | ------------: |
-| 0–12      |        57.97% |
-| 12–18     |        42.86% |
-| 18–35     |        35.80% |
-| 35–60     |        38.43% |
-| 60+       |        22.73% |
+|------------|--------------|
+| 0-12 | 57.97% |
+| 12-18 | 42.86% |
+| 18-35 | 35.80% |
+| 35-60 | 38.43% |
+| 60+ | 22.73% |
 
-#### Insight
+### Insight
 
 Children had the highest survival rates while elderly passengers had the lowest.
 
 ---
 
-### Survival Rate by Fare Group
+## Survival Rate by Fare Group
 
-| Fare Range    | Survival Rate |
-| ------------- | ------------: |
-| 0 – 7.91      |        19.73% |
-| 7.91 – 14.45  |        30.36% |
-| 14.45 – 31.00 |        45.50% |
-| Above 31.00   |        58.11% |
+| Fare Range | Survival Rate |
+|------------|--------------|
+| 0 – 7.91 | 19.73% |
+| 7.91 – 14.45 | 30.36% |
+| 14.45 – 31.00 | 45.50% |
+| Above 31.00 | 58.11% |
 
-#### Insight
+### Insight
 
-Passengers paying higher fares generally had higher survival rates.
-
----
-
-### Survival Rate by Cabin Information
-
-| HasCabin                    | Survival Rate |
-| --------------------------- | ------------: |
-| No Cabin Information        |        29.99% |
-| Cabin Information Available |        66.67% |
+Higher fare-paying passengers generally had better survival outcomes.
 
 ---
 
-### Survival Rate by Embarkation Port
+# 📈 Power BI Dashboard
 
-| Embarked        | Survival Rate |
-| --------------- | ------------: |
-| Cherbourg (C)   |        55.36% |
-| Queenstown (Q)  |        38.96% |
-| Southampton (S) |        33.70% |
+An interactive dashboard was created using Power BI to explore survival patterns dynamically.
+
+## Dashboard Features
+
+### KPI Cards
+
+- Total Passengers
+- Total Survived
+- Survival Rate
+- Average Age
+- Average Fare
+
+### Interactive Filters
+
+- Gender
+- Passenger Class
+- Age Group
+- Embarkation Port
+
+### Visualizations
+
+- Survivors by Gender
+- Survivors by Passenger Class
+- Survival by Age Group
+- Traveling Alone vs Family
+- Survivors by Embarkation Port
 
 ---
 
-## 📸 Project Visualizations
+## Dashboard Preview
 
-### Survival Rate by Gender
+![Titanic Dashboard](images/Titanic_dashboard.png)
+
+---
+
+# 📸 Additional Visualizations
+
+## Survival Rate by Gender
 
 ![Gender Survival](images/gender_survival.png)
 
-### Survival Rate by Passenger Class
+---
+
+## Survival Rate by Passenger Class
 
 ![Passenger Class Survival](images/pclass_survival.png)
 
-### Survival Rate by Fare Group
+---
+
+## Survival Rate by Fare Group
 
 ![Fare Survival](images/fare_survival.png)
 
-### Correlation Heatmap
+---
+
+## Correlation Heatmap
 
 ![Correlation Heatmap](images/correlation_heatmap.png)
 
-### Random Forest Feature Importance
+---
+
+## Random Forest Feature Importance
 
 ![Feature Importance](images/feature_importance.png)
 
 ---
 
-## 🔄 Data Preprocessing
+# 🔄 Data Preprocessing
 
-### One-Hot Encoding
+## One-Hot Encoding
 
-Categorical variables were converted into numerical features.
+Categorical variables converted into numerical features:
 
-Encoded Features:
-
-* Sex_male
-* Embarked_Q
-* Embarked_S
-
-### Train-Test Split
-
-The dataset was divided into:
-
-* Training Set: 80%
-* Testing Set: 20%
-
-Result:
-
-* Training Samples: 712
-* Testing Samples: 179
+```text
+Sex_male
+Embarked_Q
+Embarked_S
+```
 
 ---
 
-## 🤖 Machine Learning Models
+## Train-Test Split
 
-### Logistic Regression
+```text
+Training Set : 80%
+Testing Set  : 20%
+```
 
-Accuracy: **81.01%**
+Training Samples:
 
-### Decision Tree
+```text
+712
+```
 
-Accuracy: **78.21%**
+Testing Samples:
 
-### Random Forest
-
-Accuracy: **82.68%**
-
----
-
-## 📈 Model Comparison
-
-| Model               | Accuracy |
-| ------------------- | -------: |
-| Logistic Regression |   81.01% |
-| Decision Tree       |   78.21% |
-| Random Forest       |   82.68% |
+```text
+179
+```
 
 ---
 
-## 🏆 Best Performing Model
+# 🤖 Machine Learning Models
 
-### Random Forest Classifier
+## Logistic Regression
 
-Accuracy Achieved: **82.68%**
+Accuracy:
 
-The Random Forest model outperformed the other models and provided the best balance between bias and variance.
-
----
-
-## 📊 Random Forest Feature Importance
-
-| Feature    | Importance |
-| ---------- | ---------: |
-| Sex_male   |     0.2531 |
-| Fare       |     0.2487 |
-| Age        |     0.2472 |
-| Pclass     |     0.0690 |
-| FamilySize |     0.0472 |
-| HasCabin   |     0.0366 |
-| SibSp      |     0.0289 |
-| Embarked_S |     0.0253 |
-| Parch      |     0.0231 |
-| IsAlone    |     0.0106 |
-| Embarked_Q |     0.0104 |
+```text
+81.01%
+```
 
 ---
 
-## 🔍 Key Findings
+## Decision Tree
 
-* Female passengers had much higher survival rates.
-* First-class passengers survived more frequently.
-* Higher fare passengers were more likely to survive.
-* Children had higher survival rates than elderly passengers.
-* Cabin information was strongly associated with survival.
-* Gender, Fare, Age, and Passenger Class were the most important predictors.
+Accuracy:
+
+```text
+78.21%
+```
 
 ---
 
-## 🏅 Kaggle Competition Submission
+## Random Forest
 
-A prediction file was generated using the Random Forest model and submitted to the Kaggle Titanic competition.
+Accuracy:
 
-Submission File:
+```text
+82.68%
+```
+
+---
+
+# 📊 Model Comparison
+
+| Model | Accuracy |
+|----------|---------|
+| Logistic Regression | 81.01% |
+| Decision Tree | 78.21% |
+| Random Forest | 82.68% |
+
+---
+
+# 🏆 Best Performing Model
+
+## Random Forest Classifier
+
+Accuracy:
+
+```text
+82.68%
+```
+
+Random Forest achieved the highest predictive performance and provided strong feature importance insights.
+
+---
+
+# 📊 Random Forest Feature Importance
+
+| Feature | Importance |
+|-----------|----------|
+| Sex_male | 0.2531 |
+| Fare | 0.2487 |
+| Age | 0.2472 |
+| Pclass | 0.0690 |
+| FamilySize | 0.0472 |
+| HasCabin | 0.0366 |
+| SibSp | 0.0289 |
+| Embarked_S | 0.0253 |
+| Parch | 0.0231 |
+| IsAlone | 0.0106 |
+| Embarked_Q | 0.0104 |
+
+---
+
+# 🔍 Key Findings
+
+- Female passengers had substantially higher survival rates.
+- First-class passengers survived more frequently.
+- Higher fare-paying passengers had better chances of survival.
+- Children had better survival outcomes than elderly passengers.
+- Cabin information strongly correlated with survival.
+- Gender, Fare, Age, and Passenger Class were the most influential predictors.
+
+---
+
+# 🏅 Kaggle Competition Submission
+
+Generated prediction file:
 
 ```text
 submission.csv
 ```
 
-Submission Format:
+Format:
 
 ```text
 PassengerId,Survived
@@ -336,46 +419,48 @@ PassengerId,Survived
 
 ---
 
-## 📁 Repository Structure
+# 📁 Repository Structure
 
 ```text
 Titanic-Survival-Prediction/
 │
+├── dashboards/
+│   └── Titanic Survival Analysis.pbix
+│
 ├── datasets/
 │   ├── train.csv
 │   ├── test.csv
-│   └── gender_submission.csv
+│   ├── gender_submission.csv
+│   └── titanic_cleaned.csv
 │
 ├── images/
+│   ├── Titanic_dashboard.png
 │   ├── gender_survival.png
 │   ├── pclass_survival.png
 │   ├── fare_survival.png
 │   ├── correlation_heatmap.png
 │   └── feature_importance.png
 │
-├── dashboards/
-│   └── Titanic_Dashboard.pbix
-│
 ├── Titanic_Survival_Prediction.ipynb
-├── README.md
+├── submission.csv
 ├── requirements.txt
-└── submission.csv
+└── README.md
 ```
 
 ---
 
-## 🚀 Future Improvements
+# 🚀 Future Improvements
 
-* Hyperparameter Tuning
-* Cross Validation
-* XGBoost Implementation
-* Advanced Feature Engineering
-* Streamlit Deployment
-* Interactive Power BI Dashboard
+- Hyperparameter Tuning
+- Cross Validation
+- XGBoost Implementation
+- Streamlit Deployment
+- Power BI Multi-Page Dashboard
+- Model Deployment with Flask/FastAPI
 
 ---
 
-## 📚 Libraries Used
+# 📚 Libraries Used
 
 ```text
 pandas
@@ -384,14 +469,22 @@ matplotlib
 seaborn
 scikit-learn
 jupyter
+powerbi
 ```
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
-**Ankush Kumar Singh**
+### Ankush Kumar Singh
 
 B.Tech CSE (Data Science)
 
-Passionate about Data Analysis, Machine Learning, and solving real-world problems using data.
+Passionate about:
+- Data Analysis
+- Machine Learning
+- Data Visualization
+- Power BI
+- Problem Solving
+
+---
